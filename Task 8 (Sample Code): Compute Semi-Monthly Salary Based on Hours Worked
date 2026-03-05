@@ -1,0 +1,103 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ */
+
+package com.mycompany.motorphsamplecode;
+import java.util.Scanner;
+
+/**
+ * ComputeSemiMonthlySalary.java
+ *
+ * This program asks the user for employee payroll data and computes
+ * the semi-monthly salary. It validates values so invalid numbers
+ * (like negative hours or zero rate) cannot be used in computation.
+ */
+
+public class MotorphSemiannualPayrollSystem {
+
+    public static void main(String[] args) {
+
+        Scanner scanner = new Scanner(System.in);
+
+        // --- Employee Information ---
+        System.out.print("Enter employee name: ");
+        String employeeName = scanner.nextLine();
+
+        System.out.print("Enter position: ");
+        String position = scanner.nextLine();
+
+        System.out.print("Enter employee ID: ");
+        int employeeId = scanner.nextInt();
+
+        // --- Payroll Inputs ---
+        double hourRate;
+        double hoursWorkedPerDay;
+        int daysWorked;
+
+        // Validation loop: ensures hourly rate is positive
+        do {
+            System.out.print("Enter hourly rate: ");
+            hourRate = scanner.nextDouble();
+
+            if (hourRate <= 0) {
+                System.out.println("Hourly rate must be greater than 0.");
+            }
+
+        } while (hourRate <= 0);
+
+        // Validation loop: prevents unrealistic working hours
+        do {
+            System.out.print("Enter hours worked per day: ");
+            hoursWorkedPerDay = scanner.nextDouble();
+
+            if (hoursWorkedPerDay <= 0 || hoursWorkedPerDay > 24) {
+                System.out.println("Hours must be between 1 and 24.");
+            }
+
+        } while (hoursWorkedPerDay <= 0 || hoursWorkedPerDay > 24);
+
+        // Validation loop: days worked must be positive
+        do {
+            System.out.print("Enter days worked: ");
+            daysWorked = scanner.nextInt();
+
+            if (daysWorked <= 0) {
+                System.out.println("Days worked must be greater than 0.");
+            }
+
+        } while (daysWorked <= 0);
+
+        // --- Computation ---
+        double totalHoursWorked = hoursWorkedPerDay * daysWorked;
+        double baseSalary = hourRate * totalHoursWorked;
+
+        // Bonus condition
+        double bonus = 0;
+        if (hoursWorkedPerDay >= 7.5) {
+            bonus = 500;
+        }
+
+        double totalSalary = baseSalary + bonus;
+
+        // --- Output ---
+        System.out.println();
+        System.out.println("===== PAYROLL SUMMARY =====");
+        System.out.println("Employee: " + employeeName + ", " + position);
+        System.out.println("Employee ID: " + employeeId);
+        System.out.println("Total Hours Worked: P" + totalHoursWorked);
+        System.out.println("Base Salary: " + baseSalary);
+        System.out.println("Bonus: P" + bonus);
+        System.out.println("Total Semi-Monthly Salary: P" + totalSalary);
+        System.out.println();
+
+        //Verify if the Computation is correct
+   if (totalSalary == 12500) {
+       System.out.println("Your computation is correct!");
+   } else {    
+        System.out.println("Please Check again your computation"); }
+   
+        scanner.close();
+        
+    } // End of Main
+   
+} // End of class MotorphSemiannualPayrollSystem
