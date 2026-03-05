@@ -1,0 +1,64 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ */
+
+package com.mycompany.motorphpayrollsystem;
+
+/**
+ *
+ * @author ACER
+ */
+public class MotorPHPayrollsystem {
+
+    public static void main(String[] args) {
+    
+/**
+ ----------------------------------------------------------------
+ * This program computes an employee's total working hours
+ * based on time-in, time-out, and break duration.
+ *
+ * Formula:
+ *      totalHoursWorked = timeOut - timeIn - breakTime
+ *
+ * Parameters:
+ *      timeIn     - Employee start time (decimal format, 24-hour)
+ *      timeOut    - Employee end time (decimal format, 24-hour)
+ *      breakTime  - Total unpaid break duration in hours
+ *
+ * Returns:
+ *      Displays computed total hours worked on the console.
+ *
+ * Notes:
+ *      Decimal time format example:
+ *      8.5 = 8:30 AM
+ *      17.25 = 5:15 PM
+ * -------------------------------------------------------------
+ */    
+
+//Employee Data information
+    String employeeName1 = "Mark Dela Cruz" ;  
+    
+   // Work Schedule (24-hours decimal format) 
+    double timein = 7.5; // Employee started at 7:30 Am 
+    double timeout = 16.5; // Employee ended at 4:30 Pm
+    double lunchBreak = 1.0; // 1 hour lunch break 
+    
+    //Computation of Total Hours of Worked, using the provided formula
+    double hoursWorked = (timeout - timein - lunchBreak);
+    
+    System.out.println("Employee Name: " + employeeName1) ;
+    System.out.println("timein: " + timein) ;
+    System.out.println("timeout: " + timeout) ;
+    System.out.println("Lunchbreak: " + lunchBreak) ; 
+    System.out.println("TotalhoursWorked: " + hoursWorked) ;
+    
+    //Verification
+    if (hoursWorked >= 8.0 ) {
+        System.out.println("Test Passed: Computation is correct ") ; 
+    }
+    else { 
+        System.out.println("Test Failed: Review computation"); }
+         
+    
+}  //End of main
+}//End of class MotorPHPayrollsystem
