@@ -1,0 +1,166 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ */
+
+package com.mycompany.motorphpayroll;
+import java.util.Scanner;
+
+/**
+ * ComputeSemiMonthlySalary.java
+ *
+ * This program asks the user for employee payroll data and computes
+ * the semi-monthly salary.
+ * (like negative hours or zero rate) cannot be used in computation.
+ * Calculates individual deductions, computes net pay, and displays a payroll summary.
+ */
+
+public class MotorphPayroll {
+    
+    //Method 1: Display Login message
+    public static void displayLogin(){
+        System.out.println("==== ENTER YOUR EMPLOYEE Username, Password AND ID ==== ");
+        
+    }
+     
+    //Method 2: Display Welcome message
+    public static void displayWelcome(){
+      System.out.println();
+      System.out.println("===== Welcome to the Payroll System ====="); 
+      System.out.println("You have successfully signed in!");
+      System.out.println();
+    }
+    
+    //Method 3: Display Farewell message
+    public static void displayFarewell(){
+      System.out.println();
+      System.out.println("===== Sucessfully Signed out! ===== ");
+    }
+    
+    //Method 4: Computes the semi-annual salary of the employee
+    // This method calculates the total pay and returns their salary
+    public static double computeSalary(double hoursWorkedPerDay, double daysWorked, double hourRate) {
+        double salary = hoursWorkedPerDay * daysWorked * hourRate;
+        return salary;
+    }
+    
+    //Deduction Methods:
+    public static double computeSSS(double salary){
+       return salary * 0.045; //4.5% deduction
+    }
+    
+    public static double computePhilHealth (double salary){
+      return salary *  0.025; //2.5% deduction
+     }
+    
+    public static double computePagIbig (double salary){
+     return salary * 0.01; //1% deduction
+    }
+    
+    public  static double computeincomeTaxes (double salary){
+       return salary * 0.0625; // 6.25% deduction
+    }
+    /*Method 5: Compute net pay by summing all deductions.
+    */
+    public static double computeNetPay(double salary) {
+        double sss = computeSSS(salary);
+        double philHealth = computePhilHealth(salary);
+        double pagIbig = computePagIbig(salary);
+        double incomeTax = computeincomeTaxes(salary);
+        
+        double totalDeductions = sss + philHealth + pagIbig + incomeTax;
+        
+        return salary - totalDeductions; 
+        
+    }    
+    
+    //Method 6: Add a bonus payment if the employee worked more hours.
+    public static double applyBonus(double salary, double hoursWorkedPerDay){
+        
+        double bonus = 0;
+        if (hoursWorkedPerDay >= 7.5) {
+            bonus = 500;
+        }
+       return salary + bonus;
+    }
+    
+    public static void main(String[] args) {
+        
+        //Call for the Login Display
+        try ( //Scanner object for input
+                Scanner scanner = new Scanner(System.in)) {
+            //Call for the Login Display
+            displayLogin();
+            System.out.println();
+            
+            
+            // --- Employee Information ---
+            System.out.print("Enter Username: ");
+            String employeeName = scanner.nextLine();
+            
+            System.out.print("Enter password: ");
+            String passWord = scanner.nextLine();
+            
+            System.out.print("Enter employee ID: ");
+            int employeeId = scanner.nextInt();
+            
+            //Call for the Welccome Message
+            displayWelcome();
+            System.out.println();
+            
+            // ---- Calculation Input ----
+            System.out.print("Enter Hours Worked Per Day: ");
+            double hoursWorkedPerDay = scanner.nextDouble();
+            
+            System.out.print("Enter Days Worked: ");
+            double daysWorked = scanner.nextDouble();
+            
+            System.out.print("Enter Hour Rate: ");
+            double hourRate = scanner.nextDouble();
+            
+             // Validate input
+        if (hoursWorkedPerDay <= 0 || daysWorked <= 0 || hourRate <= 0) {
+            System.out.println("\nError: Hours, days, and rate must be positive numbers!");
+            return;
+        }
+        
+            //Compute Gross Salary
+            double grossSalary = computeSalary (hoursWorkedPerDay, daysWorked,  hourRate);
+            
+            //Apply bonus
+            double salaryWithBonus;
+            salaryWithBonus = applyBonus (grossSalary, hoursWorkedPerDay);
+            
+            //Compute individual deductions
+            double sss = computeSSS(salaryWithBonus);
+            double philHealth = computePhilHealth(salaryWithBonus);
+            double pagIbig = computePagIbig(salaryWithBonus);
+            double incomeTax = computeincomeTaxes(salaryWithBonus);
+                    
+            //Apply deductions
+            double netPay = computeNetPay (salaryWithBonus);
+            
+            // ----- Output -----
+            System.out.println();
+            System.out.println("\n==== PAYROLL SUMMARY =====");
+            System.out.println("Employee Name:" + employeeName);
+            System.out.println("Employee ID: " + employeeId);
+            System.out.println("Hours Worked: " + hoursWorkedPerDay);
+            System.out.println("Hourly Rate: " + hourRate);
+            System.out.println("Days Worked: " + daysWorked);
+            System.out.println("Gross Salary: " + grossSalary);
+            System.out.println("Bonus Applied: " + (salaryWithBonus - grossSalary));
+            System.out.println("SSS: " + sss);
+            System.out.println("PhilHealth: " + philHealth);
+            System.out.println("Pag-IBIG: " + pagIbig);
+            System.out.println("Income Tax: " + incomeTax);
+            System.out.println("Net pay: " + netPay);
+          
+            
+            //Call for the Farewell Message
+            displayFarewell();
+        }
+        
+    } // End of Main
+
+
+    } // End of class MotorphSemiannualPayrollSystem
