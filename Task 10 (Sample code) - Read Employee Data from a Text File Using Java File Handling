@@ -1,0 +1,193 @@
+package com.mycompany.motorphpayroll;
+
+import java.io.FileReader;
+import java.io.BufferedReader;
+import java.io.FileWriter;
+import java.io.BufferedWriter; 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+/**
+ * MotorphPayroll.java
+ *
+ * This program allows a payroll staff to process a single employee's payroll.
+ * It calculates hours worked, gross salary, applies bonuses, computes deductions,
+ * and writes the payroll summary to a text file.
+ */
+
+public class MotorphPayroll {
+
+    // ---- FILE READING METHODS ----
+    // Reads all lines from the Employee_Data.txt file
+    public static ArrayList<String> readItemsFromFile(String filename) {
+        ArrayList<String> items = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                // Skip empty lines or header line containing "Employee"
+                if (line.trim().isEmpty() || line.toLowerCase().contains("employee")) continue;
+                items.add(line);
+            }
+        } catch (IOException e) {
+            System.out.println("Error Reading File: " + e.getMessage());
+        }
+        return items;
+    }
+
+    // ---- FILE WRITING METHODS ----
+    // Writes payroll summary to a text file in append mode
+    public static void writePayrollToFile(String filename, String content) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true))) {
+            writer.write(content + "\n\n"); // separate each payroll with blank line
+        } catch (IOException e) {
+            System.out.println("Error writing file: " + e.getMessage());
+        }
+    }
+
+    // ---- LOGIN DISPLAY (Payroll Staff) ----
+    public static void displayLogin() {
+        System.out.println("==== ENTER PAYROLL STAFF Username, Password AND ID ==== ");
+    }
+
+    // ---- WELCOME DISPLAY ----
+    public static void displayWelcome() {
+        System.out.println();
+        System.out.println("===== Welcome to the Payroll System ====="); 
+        System.out.println("You have successfully signed in!");
+        System.out.println("Date: 06/03/24");
+        System.out.println();
+    }
+
+    // ---- EXIT DISPLAY ----
+    public static void displayFarewell() {
+        System.out.println();
+        System.out.println("===== Successfully Signed out! ===== ");
+    }
+
+    // ---- Convert Log-In and Log-Out times to hours worked per day ----
+    public static double computeHoursWorked(String timeIn, String timeOut) {
+        String[] inParts = timeIn.split(":");
+        String[] outParts = timeOut.split(":");
+
+        // Convert hours and minutes to decimal hours
+        double start = Integer.parseInt(inParts[0]) + Integer.parseInt(inParts[1]) / 60.0;
+        double end = Integer.parseInt(outParts[0]) + Integer.parseInt(outParts[1]) / 60.0;
+
+        return end - start;
+    }
+
+    // ---- Deduction Methods ----
+    public static double computeSSS(double salary) { return salary * 0.045; }
+    public static double computePhilHealth(double salary) { return salary * 0.025; }
+    public static double computePagIbig(double salary) { return salary * 0.01; }
+    public static double computeIncomeTax(double salary) { return salary * 0.0625; }
+
+    // ---- Bonus Calculation ----
+    public static double applyBonus(double salary, double hoursWorkedPerDay) {
+        // Bonus of 500 if worked >= 7.5 hours
+        return salary + (hoursWorkedPerDay >= 7.5 ? 500 : 0);
+    }
+
+    // ---- Net Pay Calculation ----
+    public static double computeNetPay(double grossSalary, double hoursWorkedPerDay) {
+        double salaryWithBonus = applyBonus(grossSalary, hoursWorkedPerDay);
+        double sss = computeSSS(salaryWithBonus);
+        double philHealth = computePhilHealth(salaryWithBonus);
+        double pagIbig = computePagIbig(salaryWithBonus);
+        double incomeTax = computeIncomeTax(salaryWithBonus);
+        return salaryWithBonus - (sss + philHealth + pagIbig + incomeTax);
+    }
+
+    public static void main(String[] args) {
+
+        try (Scanner scanner = new Scanner(System.in)) {
+
+            // ---- Payroll Staff Login ----
+            displayLogin();
+            System.out.println();
+            System.out.print("Enter Username: ");
+            String staffUsername = scanner.nextLine(); // store payroll staff username
+            System.out.print("Enter Password: ");
+            String staffPassword = scanner.nextLine();
+            System.out.print("Enter Staff ID: ");
+            int staffId = scanner.nextInt();
+            scanner.nextLine(); // consume leftover newline
+
+            displayWelcome();
+
+            // ---- Read Employee Data ----
+            ArrayList<String> employeeData = readItemsFromFile("Employee_Data.txt");
+            if (employeeData.isEmpty()) {
+                System.out.println("Employee data not found!");
+                return;
+            }
+
+            // ---- Ask which employee to process ----
+            System.out.print("Enter Employee ID to process payroll for: ");
+            int targetEmployeeId = scanner.nextInt();
+
+            boolean employeeFound = false;
+
+            for (String record : employeeData) {
+
+                String[] recordParts = record.trim().split("\\s+");
+                if (recordParts.length < 7) continue;
+
+                int employeeId = Integer.parseInt(recordParts[0]);
+                if (employeeId != targetEmployeeId) continue;
+
+                // ---- Reconstruct employee first name (handles multiple words)
+                String lastName = recordParts[1];
+                String firstName = "";
+                for (int i = 2; i < recordParts.length - 4; i++) {
+                    firstName += recordParts[i] + " ";
+                }
+                firstName = firstName.trim();
+
+                String date = recordParts[recordParts.length - 4];
+                String timeIn = recordParts[recordParts.length - 3];
+                String timeOut = recordParts[recordParts.length - 2];
+                double hourlyRate = Double.parseDouble(recordParts[recordParts.length - 1]);
+
+                // ---- Compute hours worked and salary ----
+                double hoursWorked = computeHoursWorked(timeIn, timeOut);
+                double grossSalary = hoursWorked * hourlyRate;
+                double salaryWithBonus = applyBonus(grossSalary, hoursWorked);
+                double netPay = computeNetPay(grossSalary, hoursWorked);
+
+                // ---- Prepare Payroll Summary ----
+                String payrollSummary = "\n==== PAYROLL SUMMARY =====" +
+                        "\nProcessed by Staff: " + staffUsername +
+                        "\nEmployee Name: " + firstName + " " + lastName +
+                        "\nEmployee ID: " + employeeId +
+                        "\nDate: " + date +
+                        "\nHours Worked: " + hoursWorked +
+                        "\nHourly Rate: ₱" + hourlyRate +
+                        "\nGross Salary: ₱" + grossSalary +
+                        "\nBonus Applied: ₱" + (salaryWithBonus - grossSalary) +
+                        "\nSSS: ₱" + computeSSS(salaryWithBonus) +
+                        "\nPhilHealth: ₱" + computePhilHealth(salaryWithBonus) +
+                        "\nPag-IBIG: ₱" + computePagIbig(salaryWithBonus) +
+                        "\nIncome Tax: ₱" + computeIncomeTax(salaryWithBonus) +
+                        "\nNet Pay: ₱" + netPay;
+
+                System.out.println(payrollSummary);
+
+                // ---- Write payroll to file ----
+                writePayrollToFile("Payroll_Summary.txt", payrollSummary);
+
+                employeeFound = true;
+                break; // Stop after processing the selected employee
+            }
+
+            if (!employeeFound) {
+                System.out.println("Employee with ID " + targetEmployeeId + " not found!");
+            }
+
+            displayFarewell();
+        }
+
+    } // End of Main
+
+} // End of class MotorphPayroll
