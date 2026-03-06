@@ -1,0 +1,35 @@
+Employee #   Last Name      First Name         Date            Log In        Log Out     Rate
+10001          Garcia        Manuel III     06/03/2024          8:59          18:31       350
+10002           Lim          Antonio        06/03/2024         10:35          19:44       420
+10003         Aquino       Bianca Sofia     06/03/2024         10:23          18:32       300
+10004          Reyes         Isabella       06/03/2024         10:57          18:14       380
+10005        Hernandez        Eduard        06/03/2024          9:48          17:13       410
+10006        Villanueva    Andrea Mae       06/03/2024          9:31          19:29       370
+10007         San Jose         Brad         06/03/2024          9:09          16:30       290
+10008        Romualdez         Alice        06/03/2024          9:02          18:06       360
+10009         Atienza          Rosie        06/03/2024          8:18          17:40       330
+10010          Alvaro        Roderick       06/03/2024          8:10          15:13       310
+10011         Salcedo        Anthony        06/03/2024          9:08          19:36       400
+10012          Lopez           Josie        06/03/2024          9:47          18:43       350
+10013          Farala         Martha        06/03/2024          9:48          19:21       380
+10014         Martinez         Leila        06/03/2024          9:23          18:09       420
+10015        Romualdez       Fredrick       06/03/2024          8:41          19:27       390
+10016          Mata          Christian      06/03/2024          8:41          16:45       300
+10017         De Leon         Selena        06/03/2024          9:40          17:24       310
+10018         San Jose        Allison       06/03/2024          8:22          16:46       320
+10019         Rosario         Cydney        06/03/2024          9:53          17:24       340
+10020         Bautista         Mark         06/03/2024          8:47          16:27       330
+10021          Lazaro        Darlene        06/03/2024          9:37          18:45       360
+10022       Delos Santos      Kolby         06/03/2024         10:54          20:10       410
+10023         Santos           Vella        06/03/2024         10:27          20:10       400
+10024       Del Rosario       Tomas         06/03/2024          9:16          17:57       370
+10025        Tolentino        Jacklyn       06/03/2024         10:18          18:07       390
+10026         Gutierrez      Percival       06/03/2024          8:17          18:31       360
+10027       Manalaysay       Garfield       06/03/2024          9:05          19:14       350
+10028         Villegas        Lizeth        06/03/2024          8:52          17:23       330
+10029         Ramos            Carol        06/03/2024         10:57          21:44       420
+10030         Maceda          Emelia        06/03/2024          9:04          16:39       300
+10031         Aguilar          Delia        06/03/2024         10:07          20:51       400
+10032          Castro       John Rafael     06/03/2024          8:29          16:46       320
+10033         Martinez      Carlos Ian      06/03/2024         10:02          19:39       410
+10034         Santos          Beatriz       06/03/2024         10:05          18:12       380
